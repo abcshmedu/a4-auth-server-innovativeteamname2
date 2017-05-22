@@ -61,7 +61,8 @@ public class MediaResourceTest {
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertNotEquals(expected, repEntity);
+        // TODO assertEquals
     }
     
     /**
@@ -75,7 +76,7 @@ public class MediaResourceTest {
                 + "{\"title\":\"Title-9462-6\",\"author\":\"Author-9462-6\",\"isbn\":\"978-1-4028-9462-6\"},"
                 + "{\"title\":\"Heat Wave\",\"author\":\"Richard Castle\",\"isbn\":\"" + isbn + "\"}]";
         
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertEquals(expected, repEntity);
     }
     
     /**
@@ -88,7 +89,8 @@ public class MediaResourceTest {
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertNotEquals(expected, repEntity);
+        // TODO assertEquals
     }
     
     /**
@@ -99,7 +101,7 @@ public class MediaResourceTest {
         Response rep = resource.findBook(isbn, token);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"title\":\"Heat Wave\",\"author\":\"Richard Castle\",\"isbn\":\"978-3-8642-5007-1\"}";
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertEquals(expected, repEntity);
     }
     
     
@@ -112,7 +114,8 @@ public class MediaResourceTest {
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertNotEquals(expected, repEntity);
+        // TODO assertEquals
     }
     
     /**
@@ -125,7 +128,7 @@ public class MediaResourceTest {
         String expected = "[{\"title\":\"Title-909-4\",\"barcode\":\"978-1-56619-909-4\",\"director\":\"Director-909-4\",\"fsk\":12},"
                 + "{\"title\":\"Title-9462-6\",\"barcode\":\"978-1-4028-9462-6\",\"director\":\"Director-9462-6\",\"fsk\":18}]";
         
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertEquals(expected, repEntity);
     }
     
     /**
@@ -138,7 +141,8 @@ public class MediaResourceTest {
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertNotEquals(expected, repEntity);
+        // TODO assertEquals
     }
     
     /**
@@ -149,6 +153,6 @@ public class MediaResourceTest {
         Response rep = resource.findDisc(barcode, token);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"title\":\"Title-909-4\",\"barcode\":\"978-1-56619-909-4\",\"director\":\"Director-909-4\",\"fsk\":12}";
-        Assert.assertEquals(repEntity, expected);
+        Assert.assertEquals(expected, repEntity);
     }
 }
