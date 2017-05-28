@@ -72,7 +72,7 @@ public class MediaServiceImpl implements IMediaService {
         try  {
             for (int c = 0; c < isbnLength; c++)  {
                 int digit = Integer.parseInt(isbn.substring(c, c + 1));
-                // Zur Berechnung der PrÃ¼fziffer bei der ISBN-13 werden alle zwÃ¶lf Ziffern der noch unvollstÃ¤ndigen ISBN addiert,
+                // Zur Berechnung der Prüfziffer bei der ISBN-13 werden alle zwölf Ziffern der noch unvollstÃ¤ndigen ISBN addiert,
                 // wobei die Ziffern mit gerader Position (also die zweite, vierte und so weiter) dreifachen Wert erhalten.
                 int mult = 1;
                 if ((c + 1) % 2 == 0)  {
@@ -81,10 +81,10 @@ public class MediaServiceImpl implements IMediaService {
                 sum += digit * mult;
             }
             
-            // Checksumme = (Die Zehnerpotenz, die grÃ¶ÃŸer als die Summe ist) - Summe
+            // Checksumme = (Die Zehnerpotenz, die größer als die Summe ist) - Summe
             int checksum = (sum / moduloFactor + 1) * moduloFactor - sum;
             
-            //Ist das Endergebnis 10, ist die PrÃ¼fziffer 0.
+            //Ist das Endergebnis 10, ist die Prüfziffer 0.
             if (checksum == moduloFactor)  {
                 checksum = 0;
             }

@@ -44,6 +44,32 @@ public class AuthenticationServiceTest {
     }
     
     /**
+     * Tests on addUser.
+     * Möglicher Fehler: Name oder Passwort leer.
+     * Möglicher Fehler: User existiert bereits.
+     */
+    @Test
+    public void testAddUser()  {
+        // Missing Data
+        User noName = new User("", "password");
+        User noPass = new User("username", "");
+        
+        MediaServiceResult result = tokenService.addUser(noName);
+        Assert.assertEquals(MediaServiceResult.BADREQUEST.getNote(), result.getNote());
+        
+        result = tokenService.addUser(noPass);
+        Assert.assertEquals(MediaServiceResult.BADREQUEST.getNote(), result.getNote());
+        
+        // Everything Okay
+        result = tokenService.addUser(rootUser);
+        Assert.assertEquals(MediaServiceResult.OKAY.getNote(), result.getNote());
+        
+        // Duplicate User
+        result = tokenService.addUser(rootUser);
+        Assert.assertEquals(MediaServiceResult.DUPLICATEOBJ.getNote(), result.getNote());
+    }
+    
+    /**
      * Test on generateToken.
      * Möglicher Fehler: User nicht in Datenbank.
      */

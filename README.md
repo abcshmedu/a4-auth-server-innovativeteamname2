@@ -27,6 +27,10 @@ URI-Template|Verb|Wirkung
 
 Object|Parameter|Input
  -|-|-
+**User**| |
+ &nbsp;|name|String
+ &nbsp;|pass|String
+ &nbsp;|role|String ("USER", "ADMIN" or "ROOT")
 **Bücher**| | 
  &nbsp;|author|String
  &nbsp;|isbn|String

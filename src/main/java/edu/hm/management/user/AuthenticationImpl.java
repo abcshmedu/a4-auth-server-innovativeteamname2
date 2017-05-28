@@ -98,7 +98,10 @@ public class AuthenticationImpl implements IAuthentication  {
      * @param createToken true if an initial token should be created
      * @return MediaServiceResult
      */
-    public MediaServiceResult addUser(User usr, boolean createToken) {
+    public MediaServiceResult addUser(User usr, boolean createToken)  {
+        if (usr.getName().isEmpty() || usr.getPass().isEmpty())  {
+            return MediaServiceResult.BADREQUEST;
+        }
         MediaServiceResult result = MediaServiceResult.DUPLICATEOBJ;
         boolean exists = false;
         for (User user : tokens.keySet())  {
