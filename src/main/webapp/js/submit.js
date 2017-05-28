@@ -288,6 +288,36 @@ var listUsers = function() {
 }
 
 /**
+ * Updates a User.
+ */
+var updateUser = function() {
+    var json = JSON.stringify({
+        name: $("input[name=name]").val(),
+        pass: $("input[name=pass]").val()
+    });
+    var errorText = $("#errormessage");
+    $.ajax({
+        url: '/shareit/users/?token=rootToken',
+        type:'PUT',
+        contentType: 'application/json; charset=UTF-8',
+        data: json
+        })
+    .done(() => {
+        $("input[name=name]").val("");
+        $("input[name=pass]").val("");
+        
+        errorText.addClass("visible");
+        errorText.text("User was updated in the System.");
+        errorText.removeClass("hidden");
+    })
+    .fail((error) => {
+        errorText.addClass("visible");
+        errorText.text(error.responseJSON.detail);
+        errorText.removeClass("hidden");
+    });
+}
+
+/**
  * Finds a User.
  */
 var findUser = function() {

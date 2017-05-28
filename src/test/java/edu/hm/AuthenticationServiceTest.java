@@ -91,22 +91,39 @@ public class AuthenticationServiceTest {
     }
     
     /**
-     * Converts an Object into an JSON String.
-     * @param obj Object to convert
-     * @return JSON representation of given Object.
+     *  Tests on updateUser.
+     *  Mögliche Fehler: User nicht vorhanden
+     *  Mögliche Fehler: Passwort ist identisch
      */
-    private String objToJSON(Object obj)  {
-        ObjectMapper mapper = new ObjectMapper();
-
-        //Object to JSON in String
-        String jsonInString = "{code: 400, detail: \"Bad Request\"}";
-        try {
-            jsonInString = mapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    @Test
+    public void testUpdateUser()  {
+        // User not in Database
+        User noUser = new User("Not exist", "Password", Role.USER);
+        MediaServiceResult result = tokenService.updateUser(noUser);
+        Assert.assertEquals(MediaServiceResult.UNKNOWNUSER.getNote(), result.getNote());
         
-        return jsonInString;
+        // Same password / data
+        result = tokenService.addUser(rootUser);
+        User samePassword = new User(rootUser.getName(), rootUser.getPass(), rootUser.getRole());
+        result = tokenService.updateUser(samePassword);
+        Assert.assertEquals(MediaServiceResult.BADREQUEST.getNote(), result.getNote());
+        
+        // Empty Password
+        User emptyPassword = new User(rootUser.getName(), "", rootUser.getRole());
+        result = tokenService.updateUser(emptyPassword);
+        Assert.assertEquals(MediaServiceResult.BADREQUEST.getNote(), result.getNote());
+        
+        // All correct
+        String newPassword = "New Password";
+        User newUser = new User(rootUser.getName(), newPassword, rootUser.getRole());
+        result = tokenService.updateUser(newUser);
+        Assert.assertEquals(MediaServiceResult.OKAY.getNote(), result.getNote());
+        
+        // Existing User which was not logged in yet
+        newPassword = "Newer Password";
+        User root = new User("root", newPassword, Role.ROOT);
+        result = tokenService.updateUser(root);
+        Assert.assertEquals(MediaServiceResult.OKAY.getNote(), result.getNote());
     }
     
     /**
@@ -130,5 +147,23 @@ public class AuthenticationServiceTest {
         Assert.assertEquals(expected, repEntity);
     }
     
+    /**
+     * Converts an Object into an JSON String.
+     * @param obj Object to convert
+     * @return JSON representation of given Object.
+     */
+    private String objToJSON(Object obj)  {
+        ObjectMapper mapper = new ObjectMapper();
+
+        //Object to JSON in String
+        String jsonInString = "{code: 400, detail: \"Bad Request\"}";
+        try {
+            jsonInString = mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        
+        return jsonInString;
+    }
 
 }

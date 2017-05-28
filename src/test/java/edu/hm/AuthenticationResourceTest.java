@@ -70,17 +70,31 @@ public class AuthenticationResourceTest {
         Response rep = tokenResource.createUser(usr1);
         rep = tokenResource.getUsers();
         String repEntity = rep.getEntity().toString();
-        String expected = "[{\"name\":\"root\",\"pass\":\"rootpasswort\",\"role\":\"ROOT\"},"
+        String expected1 = "[{\"name\":\"root\",\"pass\":\"rootpasswort\",\"role\":\"ROOT\"},"
                 + "{\"name\":\"Test\",\"pass\":\"Test\",\"role\":\"USER\"}]";
         
-        Assert.assertEquals(expected, repEntity);
+        String expected2 = "[{\"name\":\"Test\",\"pass\":\"Test\",\"role\":\"USER\"},"
+                + "{\"name\":\"root\",\"pass\":\"rootpasswort\",\"role\":\"ROOT\"}]";
+        
+        // Sometimes, the values change their order -> Test fails
+        if (expected1.equals(repEntity))  {
+            Assert.assertEquals(expected1, repEntity);
+        }
+        else if (expected2.equals(repEntity))  {
+            Assert.assertEquals(expected2, repEntity);
+        }
+        
+        else  {
+            Assert.assertEquals("can not match", repEntity);
+        }
+
     }
     
     /**
-     * Test on updateBook.
+     * Test on updateUser.
      */
     @Test
-    public void testUpdateBook() {
+    public void testUpdateUser() {
         User usr = new User("Test", usr1.getPass(), usr1.getRole());
         Response rep = tokenResource.updateUser(usr);
         String repEntity = rep.getEntity().toString();

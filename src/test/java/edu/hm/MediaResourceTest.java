@@ -13,6 +13,8 @@ import edu.hm.management.media.Book;
 import edu.hm.management.media.Disc;
 import edu.hm.management.user.AuthenticationResource;
 import edu.hm.management.user.IAuthentication;
+import edu.hm.management.user.Role;
+import edu.hm.management.user.User;
 import edu.hm.management.user.AuthenticationImpl;
 
 import javax.ws.rs.core.Response;
@@ -24,19 +26,21 @@ import javax.ws.rs.core.Response;
  */
 public class MediaResourceTest {
     
-    private IMediaService newService = new MediaServiceImpl();
-    private IAuthentication newToken = new AuthenticationImpl();
+    private IMediaService service = new MediaServiceImpl();
+    private IAuthentication tokenService = new AuthenticationImpl();
     
     private MediaResource resource = new MediaResource();
     private AuthenticationResource tokenResource = new AuthenticationResource();
     
-    private String token = "rootToken";
+    private final String token = "rootToken";
         
-    private Book bk1 = new Book("Richard Castle", "978-3864250101", "Frozen Heat");
-    private String isbn = "978-3-8642-5007-1";
+    private final Book bk1 = new Book("Richard Castle", "978-3864250101", "Frozen Heat");
+    private final String isbn = "978-3-8642-5007-1";
 
-    private Disc ds1 = new Disc("978-3864250101", "Director-Frozen", Fsk.FSK16.getFsk(), "Title-Frozen");
-    private String barcode = "978-1-56619-909-4";
+    private final Disc ds1 = new Disc("978-3864250101", "Director-Frozen", Fsk.FSK16.getFsk(), "Title-Frozen");
+    private final String barcode = "978-1-56619-909-4";
+    
+    private final User rootUser = new User("rootUsr", "rootpw", Role.ROOT);
     
     /**
      * Deleting the List each time.
@@ -44,12 +48,13 @@ public class MediaResourceTest {
      */
     @Before
     public void setUp() throws Exception {
-        newToken = new AuthenticationImpl();
-        tokenResource = new AuthenticationResource(newToken);
+        tokenService.clearLibary();
+        tokenService = new AuthenticationImpl();
+        tokenResource = new AuthenticationResource(tokenService);
         
-        newService.clearLibary();
-        newService = new MediaServiceImpl();
-        resource = new MediaResource(newService, newToken);
+        service.clearLibary();
+        service = new MediaServiceImpl();
+        resource = new MediaResource(service, tokenService);
     }
     
     /**
@@ -57,12 +62,22 @@ public class MediaResourceTest {
      */
     @Test
     public void testCreateBook() {
+        // First wrong
         Response rep = resource.createBook(bk1, token);
         String repEntity = rep.getEntity().toString();
-        String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
+        String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
+                + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
+        Assert.assertEquals(expected, repEntity);
+        
+        // Then right
+        tokenService.addUser(rootUser);
+        tokenService.generateToken(rootUser);
+        
+        rep = resource.createBook(bk1, token);
+        repEntity = rep.getEntity().toString();
+        expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertNotEquals(expected, repEntity);
-        // TODO assertEquals
+        Assert.assertEquals(expected, repEntity);
     }
     
     /**
@@ -84,13 +99,23 @@ public class MediaResourceTest {
      */
     @Test
     public void testUpdateBook() {
+        // First wrong
         Book update = new Book("New Author", isbn, "New Title");
         Response rep = resource.updateBook(update, token);
         String repEntity = rep.getEntity().toString();
-        String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
+        String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
+                + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
+        Assert.assertEquals(expected, repEntity);
+        
+        // Then right
+        tokenService.addUser(rootUser);
+        tokenService.generateToken(rootUser);
+        
+        rep = resource.updateBook(update, token);
+        repEntity = rep.getEntity().toString();
+        expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertNotEquals(expected, repEntity);
-        // TODO assertEquals
+        Assert.assertEquals(expected, repEntity);
     }
     
     /**
@@ -110,12 +135,22 @@ public class MediaResourceTest {
      */
     @Test
     public void testCreatDisc()  {
+        // First wrong
         Response rep = resource.createDisc(ds1, token);
         String repEntity = rep.getEntity().toString();
-        String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
+        String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
+                + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
+        Assert.assertEquals(expected, repEntity);
+        
+        // Then right
+        tokenService.addUser(rootUser);
+        tokenService.generateToken(rootUser);
+        
+        rep = resource.createDisc(ds1, token);
+        repEntity = rep.getEntity().toString();
+        expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertNotEquals(expected, repEntity);
-        // TODO assertEquals
+        Assert.assertEquals(expected, repEntity);
     }
     
     /**
@@ -136,13 +171,23 @@ public class MediaResourceTest {
      */
     @Test
     public void testUpdateDisc() {
+        // First wrong
         Disc update = new Disc(barcode, "New Director", Fsk.FSK0.getFsk(), "New Title");
         Response rep = resource.updateDisc(update, token);
         String repEntity = rep.getEntity().toString();
-        String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
+        String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
+                + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
+        Assert.assertEquals(expected, repEntity);
+        
+        // Then right
+        tokenService.addUser(rootUser);
+        tokenService.generateToken(rootUser);
+        
+        rep = resource.updateDisc(update, token);
+        repEntity = rep.getEntity().toString();
+        expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
-        Assert.assertNotEquals(expected, repEntity);
-        // TODO assertEquals
+        Assert.assertEquals(expected, repEntity);
     }
     
     /**

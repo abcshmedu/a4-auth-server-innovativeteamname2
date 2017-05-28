@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -134,12 +135,24 @@ public class AuthenticationImpl implements IAuthentication  {
                 md = MessageDigest.getInstance("MD5");
                 md.reset();
                 try {
-                    md.update(md5string.getBytes("UTF-8"));
-                    String md5 = md.digest().toString();
+                    byte[] array = md.digest(md5string.getBytes("UTF-8"));
+                    
+                    StringBuffer sb = new StringBuffer();
+                    final int max8bit = 0xFF; // = 255
+                    final int twoPowerEight = 0x100; // 2^8 = 256
+                    final int cutTwoByte = 3;
+                    
+                    for (int i = 0; i < array.length; ++i) {
+                      sb.append(Integer.toHexString((array[i] & max8bit) | twoPowerEight).substring(1, cutTwoByte));
+                    }
+                    String md5 =  sb.toString();
+                    
+                    // Credit goes to https://stackoverflow.com/a/6565597
                     
                     if (user.hasRole(Role.ROOT))  {
                         md5 = "rootToken";
                     }
+
                     tokens.put(user, md5);
                     logins.put(user, getIPaddr());
                     
@@ -183,8 +196,44 @@ public class AuthenticationImpl implements IAuthentication  {
 
     @Override
     public MediaServiceResult updateUser(User usr) {
-        // TODO Auto-generated method stub
-        return null;
+        boolean userExists = false;
+        for (User user : tokens.keySet())  {
+            if (usr.equals(user))  {
+                userExists = true;
+            }
+        }
+        if (userExists)  {
+            Set<User> users = tokens.keySet();
+            Iterator<User> iter = users.iterator();
+            while (iter.hasNext())  {
+                User user = iter.next();
+                if (usr.equals(user))  {
+                    String username = user.getName();
+                    String password = user.getPass();
+                    Role role = user.getRole();
+                    
+                    if (!user.getPass().equals(usr.getPass()) && !usr.getPass().isEmpty())  {
+                        password = usr.getPass();
+                    }
+                    
+                    MediaServiceResult result = MediaServiceResult.BADREQUEST;
+                    
+                    if (!password.equals(user.getPass()))  {  // Data was modified
+                        tokens.remove(user);
+
+                        Set<User> userlogins = logins.keySet();
+                        if (userlogins.contains(user))  {
+                            logins.remove(user);
+                        }
+                        
+                        User newUser = new User(username, password, role);
+                        result = addUser(newUser);
+                    }
+                    return result;
+                }
+            }
+        }
+        return MediaServiceResult.UNKNOWNUSER;
     }
 
     @Override
