@@ -176,7 +176,7 @@ var findBook = function() {
     var isbn = $("input[name=isbn]").val();
     var errorText = $("#errormessage");
     $.ajax({
-        url: '/shareit/media/books/'+isbn+'/?token=rootToken',
+        url: '/shareit/media/books/'+isbn,
         type:'GET'
         })
     .done((data) => {
@@ -195,7 +195,7 @@ var findDisc = function() {
     var barcode = $("input[name=barcode]").val();
     var errorText = $("#errormessage");
     $.ajax({
-        url: '/shareit/media/discs/'+barcode+'/?token=rootToken',
+        url: '/shareit/media/discs/'+barcode,
         type:'GET'
         })
     .done((data) => {
