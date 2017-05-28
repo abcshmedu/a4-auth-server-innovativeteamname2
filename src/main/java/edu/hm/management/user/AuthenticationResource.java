@@ -1,5 +1,6 @@
 package edu.hm.management.user;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -7,6 +8,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -67,14 +69,15 @@ public class AuthenticationResource {
     /**
      * Creates a Token for a given User.
      * @param user User to create a Token.
+     * @param request Request Data sent by user
      * @return JSON response with status code and created json object.
      */
     @POST
     @Path("/users/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createToken(User user)  {
-        MediaServiceResult result = token.generateToken(user);
+    public Response createToken(User user, @Context HttpServletRequest request)  {
+        MediaServiceResult result = token.generateToken(user, request);
         
         JSONObject json = new JSONObject();
         json.put("code", result.getCode());

@@ -63,7 +63,7 @@ public class MediaResourceTest {
     @Test
     public void testCreateBook() {
         // First wrong
-        Response rep = resource.createBook(bk1, token);
+        Response rep = resource.createBook(bk1, token, null);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
                 + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
@@ -71,9 +71,9 @@ public class MediaResourceTest {
         
         // Then right
         tokenService.addUser(rootUser);
-        tokenService.generateToken(rootUser);
+        tokenService.generateToken(rootUser, null);
         
-        rep = resource.createBook(bk1, token);
+        rep = resource.createBook(bk1, token, null);
         repEntity = rep.getEntity().toString();
         expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
@@ -101,7 +101,7 @@ public class MediaResourceTest {
     public void testUpdateBook() {
         // First wrong
         Book update = new Book("New Author", isbn, "New Title");
-        Response rep = resource.updateBook(update, token);
+        Response rep = resource.updateBook(update, token, null);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
                 + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
@@ -109,9 +109,9 @@ public class MediaResourceTest {
         
         // Then right
         tokenService.addUser(rootUser);
-        tokenService.generateToken(rootUser);
+        tokenService.generateToken(rootUser, null);
         
-        rep = resource.updateBook(update, token);
+        rep = resource.updateBook(update, token, null);
         repEntity = rep.getEntity().toString();
         expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
@@ -136,7 +136,7 @@ public class MediaResourceTest {
     @Test
     public void testCreatDisc()  {
         // First wrong
-        Response rep = resource.createDisc(ds1, token);
+        Response rep = resource.createDisc(ds1, token, null);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
                 + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
@@ -144,9 +144,9 @@ public class MediaResourceTest {
         
         // Then right
         tokenService.addUser(rootUser);
-        tokenService.generateToken(rootUser);
+        tokenService.generateToken(rootUser, null);
         
-        rep = resource.createDisc(ds1, token);
+        rep = resource.createDisc(ds1, token, null);
         repEntity = rep.getEntity().toString();
         expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";
@@ -173,7 +173,7 @@ public class MediaResourceTest {
     public void testUpdateDisc() {
         // First wrong
         Disc update = new Disc(barcode, "New Director", Fsk.FSK0.getFsk(), "New Title");
-        Response rep = resource.updateDisc(update, token);
+        Response rep = resource.updateDisc(update, token, null);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.TOKENNOTVALID.getCode() + ",\"detail\":\""
                 + MediaServiceResult.TOKENNOTVALID.getNote() +  "\"}";
@@ -181,9 +181,9 @@ public class MediaResourceTest {
         
         // Then right
         tokenService.addUser(rootUser);
-        tokenService.generateToken(rootUser);
+        tokenService.generateToken(rootUser, null);
         
-        rep = resource.updateDisc(update, token);
+        rep = resource.updateDisc(update, token, null);
         repEntity = rep.getEntity().toString();
         expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";

@@ -28,8 +28,7 @@ public class AuthenticationServiceTest {
     
     private final String token = "rootToken";
     
-    private final User usr1 = new User("Test", "Test", Role.USER);
-    private final User usr2 = new User("Test2", "Test2", Role.USER);
+    private final User usr = new User("Test", "Test", Role.USER);
     private final User rootUser = new User("rootUser", "rootpw", Role.ROOT);
     
     /**
@@ -76,14 +75,14 @@ public class AuthenticationServiceTest {
     @Test
     public void testGenerateToken()  {
         // Not in Database
-        MediaServiceResult result = tokenService.generateToken(rootUser);
+        MediaServiceResult result = tokenService.generateToken(rootUser, null);
         Assert.assertEquals(MediaServiceResult.UNKNOWNUSER.getNote(), result.getNote());
         
         // Allright
-        tokenService.addUser(usr1);
+        tokenService.addUser(usr);
         
         tokenService.addUser(rootUser);
-        result = tokenService.generateToken(rootUser);
+        result = tokenService.generateToken(rootUser, null);
         Assert.assertEquals(MediaServiceResult.OKAY.getNote(), result.getNote());
     }
     
@@ -95,13 +94,13 @@ public class AuthenticationServiceTest {
     public void testValidateToken()  {
         // Not Valid
         String unvalidToken = "notvalid";
-        MediaServiceResult result = tokenService.validateToken(unvalidToken);
+        MediaServiceResult result = tokenService.validateToken(unvalidToken, null);
         Assert.assertEquals(MediaServiceResult.TOKENNOTVALID.getNote(), result.getNote());
         
         // Valid
-        tokenService.addUser(usr2);
         tokenService.addUser(rootUser);
-        result = tokenService.validateToken(token);
+        tokenService.generateToken(rootUser, null);
+        result = tokenService.validateToken(token, null);
         Assert.assertEquals(MediaServiceResult.OKAY.getNote(), result.getNote());
     }
     
@@ -166,8 +165,8 @@ public class AuthenticationServiceTest {
         Assert.assertEquals(expected, repEntity);
         
         // Exists
-        rep = tokenResource.createUser(usr1);
-        rep = tokenResource.findUser(usr1.getName());
+        rep = tokenResource.createUser(usr);
+        rep = tokenResource.findUser(usr.getName());
         repEntity = rep.getEntity().toString();
         expected = "{\"name\":\"Test\",\"pass\":\"Test\",\"role\":\"USER\"}";
         Assert.assertEquals(expected, repEntity);

@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import edu.hm.management.bib.MediaServiceResult;
 
 /**
@@ -42,7 +44,7 @@ public class AuthenticationImpl implements IAuthentication  {
      */
     public AuthenticationImpl()  {
         User root = new User("root", "rootpasswort", Role.ROOT);
-        addUser(root, false);
+        addUser(root);
     }
     
     /**
@@ -60,7 +62,7 @@ public class AuthenticationImpl implements IAuthentication  {
     private String getIPaddr()  {
         String addr = null;
         try {
-            addr = InetAddress.getLocalHost().getHostAddress();
+            addr = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -87,18 +89,14 @@ public class AuthenticationImpl implements IAuthentication  {
         return keys;
     }
     
-    @Override
-    public MediaServiceResult addUser(User usr) {
-        return addUser(usr, true);
-    }
     
     /**
      * Extended function to add a user to the Service which can select if a token should be created imediately.
      * @param usr User to add
-     * @param createToken true if an initial token should be created
      * @return MediaServiceResult
      */
-    public MediaServiceResult addUser(User usr, boolean createToken)  {
+    @Override
+    public MediaServiceResult addUser(User usr)  {
         if (usr.getName().isEmpty() || usr.getPass().isEmpty())  {
             return MediaServiceResult.BADREQUEST;
         }
@@ -112,15 +110,18 @@ public class AuthenticationImpl implements IAuthentication  {
         }
         if (!exists)  {
             tokens.put(usr, "0");
-            if (createToken)  {
-                result = generateToken(usr);
-            }
+            result = MediaServiceResult.OKAY;
         }
         return result;
     }
-
-    @Override
-    public MediaServiceResult generateToken(User usr)  {
+    
+    /**
+     * Generates a Token for a given user according to a Request.
+     * @param usr User of Token
+     * @param request Request of Client Execution
+     * @return Media Service Result
+     */
+    public MediaServiceResult generateToken(User usr, HttpServletRequest request)  {
         boolean exists = false;
         User user = null;
         for (User userCheck : tokens.keySet())  {
@@ -155,9 +156,21 @@ public class AuthenticationImpl implements IAuthentication  {
                     if (user.hasRole(Role.ROOT))  {
                         md5 = "rootToken";
                     }
-
+                    
+                    String ipAddr = "";
+                    if (request != null)  {
+                        ipAddr = request.getRemoteAddr();
+                    }
+                    else  {
+                        ipAddr = "127.0.0.1";
+                    }
+                    
+                    // Implementation build on https://stackoverflow.com/a/9499961
+                    
                     tokens.put(user, md5);
-                    logins.put(user, getIPaddr());
+                    logins.put(user, ipAddr);
+                    
+                    System.out.println("Logins: " + logins);
                     
                     return MediaServiceResult.OKAY;
                 } catch (UnsupportedEncodingException e) {
@@ -174,13 +187,20 @@ public class AuthenticationImpl implements IAuthentication  {
     }
 
     @Override
-    public MediaServiceResult validateToken(String token) {
+    public MediaServiceResult validateToken(String token, HttpServletRequest request) {
         for (String value : tokens.values())  {
             if (value.equals(token))  {
                 Set<User> users = getKeysByValue(tokens, value);
                 for (User user : users)  {
                     if (logins.containsKey(user))  {
-                        if (logins.get(user).equals(getIPaddr()))  {
+                        String ipAddr = "";
+                        if (request != null)  {
+                            ipAddr = request.getRemoteAddr();
+                        }
+                        else  {
+                            ipAddr = "127.0.0.1";
+                        }
+                        if (logins.get(user).equals(ipAddr))  {
                             return MediaServiceResult.OKAY;
                         }
                     }

@@ -55,7 +55,7 @@ public class AuthenticationResourceTest {
     @Test
     public void testCreateToken()  {
         Response rep = tokenResource.createUser(usr2);
-        rep = tokenResource.createToken(usr2);
+        rep = tokenResource.createToken(usr2, null);
         String repEntity = rep.getEntity().toString();
         String expected = "{\"code\":" + MediaServiceResult.OKAY.getCode() + ",\"detail\":\""
                 + MediaServiceResult.OKAY.getNote() +  "\"}";

@@ -1,5 +1,6 @@
 package edu.hm.management.bib;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -8,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -56,24 +58,26 @@ public class MediaResource {
     /**
      * Validates a given Token. Validation happens in Authorization Sub Routine.
      * @param token Token to check on
+     * @param request 
      * @return true if token is valid, else false
      */
-    private MediaServiceResult tokenValid(String token) {
-        return tokenService.validateToken(token);
+    private MediaServiceResult tokenValid(String token, HttpServletRequest request) {
+        return tokenService.validateToken(token, request);
     }
     
     /**
      * Creates a given Book.
      * @param book Book to create
      * @param token Token to check on
+     * @param request Request Data of Client
      * @return JSON response with status code and created json object.
      */
     @POST
     @Path("/books")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createBook(Book book, @QueryParam("token") String token)  {
-        MediaServiceResult result = tokenValid(token);
+    public Response createBook(Book book, @QueryParam("token") String token, @Context HttpServletRequest request)  {
+        MediaServiceResult result = tokenValid(token, request);
         
         if (result.equals(MediaServiceResult.OKAY)) {
             result = service.addBook(book);
@@ -103,14 +107,15 @@ public class MediaResource {
      * Updates a given Book.
      * @param book Book to update
      * @param token Token to check on
+     * @param request Request Data of Client
      * @return JSON response.
      */
     @PUT
     @Path("/books")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateBook(Book book, @QueryParam("token") String token)  {
-        MediaServiceResult result = tokenValid(token);
+    public Response updateBook(Book book, @QueryParam("token") String token, @Context HttpServletRequest request)  {
+        MediaServiceResult result = tokenValid(token, request);
         
         if (result.equals(MediaServiceResult.OKAY)) {
             result = service.updateBook(book);
@@ -143,14 +148,15 @@ public class MediaResource {
      * Creates a given Disc.
      * @param disc Disc to create
      * @param token Token to check on
+     * @param request Request Data of Client
      * @return JSON response.
      */
     @POST
     @Path("/discs")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDisc(Disc disc, @QueryParam("token") String token)  {
-        MediaServiceResult result = tokenValid(token);
+    public Response createDisc(Disc disc, @QueryParam("token") String token, @Context HttpServletRequest request)  {
+        MediaServiceResult result = tokenValid(token, request);
         
         if (result.equals(MediaServiceResult.OKAY)) {
             result = service.addDisc(disc);
@@ -181,14 +187,15 @@ public class MediaResource {
      * Updates a given Disc.
      * @param disc Disc to update
      * @param token Token to check on
+     * @param request Request Data of Client
      * @return JSON response.
      */
     @PUT
     @Path("/discs")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDisc(Disc disc, @QueryParam("token") String token)  {
-        MediaServiceResult result = tokenValid(token);
+    public Response updateDisc(Disc disc, @QueryParam("token") String token, @Context HttpServletRequest request)  {
+        MediaServiceResult result = tokenValid(token, request);
         
         if (result.equals(MediaServiceResult.OKAY)) {
             result = service.updateDisc(disc);

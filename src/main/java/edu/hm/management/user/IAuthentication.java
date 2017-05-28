@@ -1,5 +1,7 @@
 package edu.hm.management.user;
 
+import javax.servlet.http.HttpServletRequest;
+
 import edu.hm.management.bib.MediaServiceResult;
 
 /**
@@ -31,16 +33,18 @@ public interface IAuthentication {
     /** Generates a Token for a given user.
      * 
      * @param usr User of Token
+     * @param request Request Data of Client
      * @return Media Service Result
      */
-    MediaServiceResult generateToken(User usr);
-    
+    MediaServiceResult generateToken(User usr, HttpServletRequest request);
+       
     /**
      * Checks if a token is valid or not.
      * @param token token to check
+     * @param request Request Data of Client
      * @return Media Service Result
      */
-    MediaServiceResult validateToken(String token);
+    MediaServiceResult validateToken(String token, HttpServletRequest request);
     
     /**
      * Returns all Users.
