@@ -1,7 +1,5 @@
 package edu.hm.management.user;
 
-import java.util.Map;
-
 import edu.hm.management.bib.MediaServiceResult;
 
 /**
@@ -56,10 +54,4 @@ public interface IAuthentication {
      * @return a user
      */
     User findUser(String name);
-
-    /**
-     * Returns the List of Tokens and their User.
-     * @return List of Tokens and their User
-     */
-    Map<User, String> getListOfToken();
 }

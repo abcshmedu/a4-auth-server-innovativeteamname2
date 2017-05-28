@@ -197,9 +197,4 @@ public class AuthenticationImpl implements IAuthentication  {
         return null;
     }
 
-    @Override
-    public Map<User, String> getListOfToken() {
-        return tokens;
-    }
-
 }
