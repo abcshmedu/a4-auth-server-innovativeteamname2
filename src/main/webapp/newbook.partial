@@ -1,10 +1,10 @@
-	      <h2>ShareIt &mdash; New Book</h2>
-	      <!-- <form onsubmit="submitNewBook()"> -->
-	      <table border="0"><tbody>
-	        <tr><td><label for="title">Title:</label></td> <td><input type="text" name="title"></td></tr>
-	        <tr><td><label for="author">Author:</label></td> <td><input type="text" name="author"></td></tr>
-	        <tr><td><label for="isbn">ISBN:</label></td> <td><input type="text" name="isbn"></td></tr>
-	      </tbody></table>
-	      <div><span id="errormessage" class="hidden error">ERROR</span></div>
-	      <input type="submit" class="button-primary" id="registerButton" onclick="submitNewBook()" value="Eintragen"/>
-	      <!-- </form> -->
+          <h2>ShareIt &mdash; New Book</h2>
+          <!-- <form onsubmit="submitNewBook()"> -->
+          <table border="0"><tbody>
+            <tr><td><label for="title">Title:</label></td> <td><input type="text" name="title"></td></tr>
+            <tr><td><label for="author">Author:</label></td> <td><input type="text" name="author"></td></tr>
+            <tr><td><label for="isbn">ISBN:</label></td> <td><input type="text" name="isbn"></td></tr>
+          </tbody></table>
+          <div><span id="errormessage" class="hidden error">ERROR</span></div>
+          <input type="submit" class="button-primary" id="registerButton" onclick="submitNewBook()" value="Eintragen"/>
+          <!-- </form> -->

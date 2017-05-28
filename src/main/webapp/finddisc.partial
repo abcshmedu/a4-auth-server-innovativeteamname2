@@ -1,6 +1,6 @@
-		  <h2>ShareIt &mdash; Find Disc</h2>
-		   <table border="0"><tbody>
-			   <tr><td><label for="barcode">Barcode:</label></td> <td><input type="text" name="barcode"></td></tr>
-	       </tbody></table>
-		  <div><span id="errormessage" class="hidden error">ERROR</span></div>
-		  <input type="submit" class="button-primary" id="registerButton" onclick="findDisc()" value="Find Disc"/>
+          <h2>ShareIt &mdash; Find Disc</h2>
+           <table border="0"><tbody>
+               <tr><td><label for="barcode">Barcode:</label></td> <td><input type="text" name="barcode"></td></tr>
+           </tbody></table>
+          <div><span id="errormessage" class="hidden error">ERROR</span></div>
+          <input type="submit" class="button-primary" id="registerButton" onclick="findDisc()" value="Find Disc"/>

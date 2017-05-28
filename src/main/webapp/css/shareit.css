@@ -1,10 +1,10 @@
 th  {
-	padding-left: 0px;
+    padding-left: 0px;
 }
 
 td {
-	padding: 0px;
-	border: 0px;
+    padding: 0px;
+    border: 0px;
 }
 
 .hidden {
@@ -16,5 +16,5 @@ td {
 }
 
 .error {
-		color:#ff0000;
+        color:#ff0000;
 }
