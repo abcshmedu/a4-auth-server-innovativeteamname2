@@ -8,11 +8,11 @@ Project Status: 100%<br />
 URI-Template|Verb|Wirkung
  -|-|-
 **User**| | 
-/media/users|POST|Neuen User anlegen<br />Möglicher Fehler: User existiert bereits<br />Möglicher Fehler: Name und / oder Passwort vergessen
-/media/users/login|POST|Einloggen und damit neuen OAuth-Token generieren
-/media/users|GET|Alle User auflisten
-/media/users|PUT|User-Daten modifizieren (automatische Prüfung ob User in Service-Routine existiert)<br />Möglicher Fehler: User nicht gefunden<br />Möglicher Fehler: Name und Passwort fehlen<br />Möglicher Fehler: Neue Daten entsprechen den alten Daten
-/media/users/{name}|GET|Bestimmten User-Namen suchen
+/users|POST|Neuen User anlegen<br />Möglicher Fehler: User existiert bereits<br />Möglicher Fehler: Name und / oder Passwort vergessen
+/users/login|POST|Einloggen und damit neuen OAuth-Token generieren
+/users|GET|Alle User auflisten
+/users|PUT|User-Daten modifizieren (automatische Prüfung ob User in Service-Routine existiert)<br />Möglicher Fehler: User nicht gefunden<br />Möglicher Fehler: Name und Passwort fehlen<br />Möglicher Fehler: Neue Daten entsprechen den alten Daten
+/users/{name}|GET|Bestimmten User-Namen suchen
 **Bücher**| | 
 /media/books|POST|Neues Medium 'Buch' anlegen<br />Möglicher Fehler: Ungültige ISBN<br />Möglicher Fehler: ISBN bereits vorhanden<br />Möglicher Fehler: Autor oder Titel fehlt
 /media/books/{isbn}|GET|Eine JSON-Repräsentation eines gespeicherten Buches liefern, falls vorhanden
