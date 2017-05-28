@@ -90,7 +90,6 @@ public class User {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((pass == null) ? 0 : pass.hashCode());
         result = prime * result + ((role == null) ? 0 : role.hashCode());
         return result;
     }
@@ -112,13 +111,6 @@ public class User {
                 return false;
             }
         } else if (!name.equals(other.name))  {
-            return false;
-        }
-        if (pass == null) {
-            if (other.pass != null)  {
-                return false;
-            }
-        } else if (!pass.equals(other.pass))  {
             return false;
         }
         return true;

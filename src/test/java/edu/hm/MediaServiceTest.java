@@ -57,9 +57,9 @@ public class MediaServiceTest {
     
     /**
      * Tests on addBook.
-     * MÃ¶glicher Fehler: UngÃ¼ltige ISBN
-     * MÃ¶glicher Fehler: ISBN bereits vorhanden
-     * MÃ¶glicher Fehler: Autor oder Titel fehlt
+     * Möglicher Fehler: Ungültige ISBN
+     * Möglicher Fehler: ISBN bereits vorhanden
+     * Möglicher Fehler: Autor oder Titel fehlt
      */
     @Test
     public void testAddBook() {
@@ -104,9 +104,9 @@ public class MediaServiceTest {
     
     /**
      * Tests on addDisc.
-     * MÃ¶glicher Fehler: UngÃ¼ltige Barcode
-     * MÃ¶glicher Fehler: Barcode bereits vorhanden
-     * MÃ¶glicher Fehler: Director oder Titel fehlt
+     * Möglicher Fehler: Ungültige Barcode
+     * Möglicher Fehler: Barcode bereits vorhanden
+     * Möglicher Fehler: Director oder Titel fehlt
      */
     @Test
     public void testAddDisc() {
@@ -156,7 +156,7 @@ public class MediaServiceTest {
         String expected = "[{\"title\":\"Title-909-4\",\"author\":\"Author-909-4\",\"isbn\":\"978-1-56619-909-4\"},"
                 + "{\"title\":\"Title-9462-6\",\"author\":\"Author-9462-6\",\"isbn\":\"978-1-4028-9462-6\"},"
                 + "{\"title\":\"Heat Wave\",\"author\":\"Richard Castle\",\"isbn\":\"978-3-8642-5007-1\"}]";
-        Assert.assertEquals(booksJSON, expected);
+        Assert.assertEquals(expected, booksJSON);
     }
     
     /**
@@ -168,15 +168,15 @@ public class MediaServiceTest {
         String discsJSON = objToJSON(discs);
         String expected = "[{\"title\":\"Title-909-4\",\"barcode\":\"978-1-56619-909-4\",\"director\":\"Director-909-4\",\"fsk\":12},"
                 + "{\"title\":\"Title-9462-6\",\"barcode\":\"978-1-4028-9462-6\",\"director\":\"Director-9462-6\",\"fsk\":18}]";
-        Assert.assertEquals(discsJSON, expected);
+        Assert.assertEquals(expected, discsJSON);
     }
     
     /**
      * Tests on updateBook.
      * 
-     * MÃ¶glicher Fehler: ISBN nicht gefunden
-     * MÃ¶glicher Fehler: Autor und Titel fehlen
-     * MÃ¶glicher Fehler: Neue Daten entsprechen den alten Daten
+     * Möglicher Fehler: ISBN nicht gefunden
+     * Möglicher Fehler: Autor und Titel fehlen
+     * Möglicher Fehler: Neue Daten entsprechen den alten Daten
      */
     @Test
     public void testUpdateBook()  {
@@ -222,9 +222,9 @@ public class MediaServiceTest {
     /**
      * Tests on updateDisc.
      * 
-     * MÃ¶glicher Fehler: Barcode nicht gefunden
-     * MÃ¶glicher Fehler: Director und Titel fehlen
-     * MÃ¶glicher Fehler: Neue Daten entsprechen den alten Daten
+     * Möglicher Fehler: Barcode nicht gefunden
+     * Möglicher Fehler: Director und Titel fehlen
+     * Möglicher Fehler: Neue Daten entsprechen den alten Daten
      */
     @Test
     public void testUpdateDisc()  {
@@ -286,13 +286,13 @@ public class MediaServiceTest {
         Medium wrong = service.findBook("1234567890123");
         String bookJSON = objToJSON(wrong);
         String expected = "null";
-        Assert.assertEquals(bookJSON, expected);
+        Assert.assertEquals(expected, bookJSON);
         
         // correct ISBN
         Medium correct = service.findBook(bk1.getIsbn());
         bookJSON = objToJSON(correct);
         expected = "{\"title\":\"Frozen Heat\",\"author\":\"Richard Castle\",\"isbn\":\"978-3864250101\"}";
-        Assert.assertEquals(bookJSON, expected);
+        Assert.assertEquals(expected, bookJSON);
     }
     
     /**
@@ -307,13 +307,13 @@ public class MediaServiceTest {
         Medium wrong = service.findDisc("1234567890123");
         String discJSON = objToJSON(wrong);
         String expected = "null";
-        Assert.assertEquals(discJSON, expected);
+        Assert.assertEquals(expected, discJSON);
         
         // correct barcode
         Medium correct = service.findDisc(ds1.getBarcode());
         discJSON = objToJSON(correct);
         expected = "{\"title\":\"Title-Frozen\",\"barcode\":\"978-3864250101\",\"director\":\"Director-Frozen\",\"fsk\":16}";
-        Assert.assertEquals(discJSON, expected);
+        Assert.assertEquals(expected, discJSON);
     }
     
     /**

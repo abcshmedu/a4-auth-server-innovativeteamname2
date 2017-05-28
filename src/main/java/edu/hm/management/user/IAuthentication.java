@@ -10,6 +10,12 @@ import edu.hm.management.bib.MediaServiceResult;
  *
  */
 public interface IAuthentication {
+    
+    /**
+     * Method to clear the Library.
+     */
+    void clearLibary();
+    
     /**
      * Adds a User to the Sub-System.
      * @param usr User to add
@@ -50,12 +56,10 @@ public interface IAuthentication {
      * @return a user
      */
     User findUser(String name);
-    
+
     /**
      * Returns the List of Tokens and their User.
      * @return List of Tokens and their User
      */
     Map<User, String> getListOfToken();
-    
-
 }

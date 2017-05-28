@@ -10,7 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ MediaServiceTest.class, MediaResourceTest.class})
+@SuiteClasses({ MediaServiceTest.class, MediaResourceTest.class, AuthenticationResourceTest.class, AuthenticationServiceTest.class, UserTest.class})
 public class ShareItTest {
 
 }

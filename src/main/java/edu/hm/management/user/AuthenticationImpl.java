@@ -45,6 +45,14 @@ public class AuthenticationImpl implements IAuthentication  {
     }
     
     /**
+     * Method to clear the Library.
+     */
+    public void clearLibary()  {
+        tokens.clear();
+        logins.clear();
+    }
+    
+    /**
      * Functions returns IP address of Caller.
      * @return IP address of Caller
      */
@@ -98,11 +106,11 @@ public class AuthenticationImpl implements IAuthentication  {
                 break;
             }
         }
-        if (!exists && createToken)  {
-            result = generateToken(usr);
-        }
-        if (!exists && !createToken)  {
+        if (!exists)  {
             tokens.put(usr, "0");
+            if (createToken)  {
+                result = generateToken(usr);
+            }
         }
         return result;
     }
